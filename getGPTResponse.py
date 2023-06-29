@@ -3,7 +3,7 @@ import os
 from emailAlerts import sendEmail
 
 # Set up the OpenAI API client
-openai.api_key = 
+openai.api_key = "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"
 
 # Replace the text below with the content of the article you want to summarize
 article_content = """

@@ -4,6 +4,7 @@ from saveAsCSV import saveAsCSV
 from readCSV import readCSV
 from getGPTResponse import getOneLine
 from emailAlerts import sendEmail
+from Triage import triage
 
 #go through an autotrader search and get the   
 
@@ -77,50 +78,58 @@ def getIntros(driver, followers):
 
                 userDescription = getArticleBody(driver, userDescriptionContainer)
 
-                # create tweets section of query
-                queryText =  f"""
+                passed = triage(userDescription)
 
-                        User Name: {userName}
-
-                        User Description: {userDescription}
-
-                """
-
-                for x in tweetsList:
-                    
-                    # get the username from the tweet (incase its an RT)
-                    try:
-                        tweetUser = x.find_element(By.XPATH, './/div[@data-testid="User-Name"]//a').get_attribute("href")
-
-                        # get the text of the tweet
-                        tweetText = x.find_element(By.XPATH, './/div[@data-testid="tweetText"]//span').text
-
-                    except:
-                        tweetText = ""
-                        tweetUser = ""
-
-                    
-                    # check if the user
-                    if tweetUser == account[1]:
+                if passed:
                         
-                        queryText =  queryText + f"""
 
-                        User Tweet: {tweetText}
+                    # create tweets section of query
+                    queryText =  f"""
 
-                        """
+                            User Name: {userName}
 
-                    print(queryText)
+                            User Description: {userDescription}
+
+                    """
+
+                    for x in tweetsList:
+                        
+                        # get the username from the tweet (incase its an RT)
+                        try:
+                            tweetUser = x.find_element(By.XPATH, './/div[@data-testid="User-Name"]//a').get_attribute("href")
+
+                            # get the text of the tweet
+                            tweetText = x.find_element(By.XPATH, './/div[@data-testid="tweetText"]//span').text
+
+                        except:
+                            tweetText = ""
+                            tweetUser = ""
+
+                        
+                        # check if the user
+                        if tweetUser == account[1]:
+                            
+                            queryText =  queryText + f"""
+
+                            User Tweet: {tweetText}
+
+                            """
+
+                        
+                    oneLine = getOneLine(queryText)
+
+                    accounts[index][1] = "done"
+                    saveAsCSV(accounts, followers)
+
+                    usersOutreach.append([account[0], userDescription, oneLine])
+                    saveAsCSV(usersOutreach, filename)
+                    
+                else:
+                    accounts[index][1] = "done"
+                    saveAsCSV(accounts, followers)
 
                     
-                oneLine = getOneLine(queryText)
-
-                accounts[index][1] = "done"
-                saveAsCSV(accounts, followers)
-
-                usersOutreach.append([account[0], userDescription, oneLine])
-                saveAsCSV(usersOutreach, filename)
-
-                
+   
             except Exception as e:
                 print(f"An error occurred: {e}")
                 accounts[index][1] = "done"

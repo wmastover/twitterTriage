@@ -10,13 +10,24 @@ import time
 def run():
 
     # Mac OS Version
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"')  # Mimic a non-headless browser
+    chrome_options.add_argument('window-size=1800x1000')  # Specify window size
+    chrome_options.add_argument('--disable-extensions')  # Disable extensions
+    chrome_options.add_argument('--disable-gpu')  # Disable GPU acceleration
+
 
     chromedriver = ChromeDriverManager().install()
-    driver = webdriver.Chrome(chromedriver )
+    driver = webdriver.Chrome(executable_path=chromedriver, options=chrome_options)
 
     # Raspberry Pi Version
-    
     # webdriver_options = Options()
+    # webdriver_options.add_argument("--headless")
+    # chrome_options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"')  # Mimic a non-headless browser
+    # chrome_options.add_argument('window-size=1800x1000')  # Specify window size
+    # chrome_options.add_argument('--disable-extensions')  # Disable extensions
+    # chrome_options.add_argument('--disable-gpu')  # Disable GPU acceleration
     # webdriver_service = Service('/usr/lib/chromium-browser/chromedriver')
     # driver = webdriver.Chrome(service=webdriver_service, options=webdriver_options)
 
@@ -28,12 +39,13 @@ def run():
     getIntros(driver, "followers.csv")
 
 
-while True:      
-    try: 
-        sendEmail("Restart", "We have just relaunched the triage system", "")
-        run()
+# while True:      
+#     try: 
 
-    except:
-        print("crash")
-        sendEmail("Crash Report", "Top level crash, waiting 30 seconds then relaunching", "")
-        time.sleep(30)
+sendEmail("Restart", "We have just relaunched the triage system", "")
+run()
+
+    # except:
+    #     print("crash")
+    #     sendEmail("Crash Report", "Top level crash, waiting 30 seconds then relaunching", "")
+    #     time.sleep(30)

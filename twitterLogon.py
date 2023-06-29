@@ -5,33 +5,18 @@ from selenium.webdriver.common.by import By
 
 def twitterLogon(email, username, password, driver):
 
-    driver.get("https://twitter.com/login")
-    time.sleep(10)
-
-    emailLabel = driver.find_element(By.XPATH, "//span[contains(text(), 'Phone, email address, or username')]/ancestor::label[1]")
-
-    emailInput = emailLabel.find_element( By.XPATH, ".//input[1]")
-
-    emailInput.send_keys(email)
-
-    time.sleep(1)
-
-    nextButtonText = driver.find_element(By.XPATH, "//span[contains(text(), 'Next')]")
-
-    nextButton = nextButtonText.find_element(By.XPATH, ".//ancestor::div[@role='button'][1]")
-
-    nextButton.click()
-
-    time.sleep(5)
-
     try:
-        title = driver.find_element(By.XPATH, "//span[contains(text(), 'Enter your phone number or username')]")
-        
-        print("enter phone number or username found")
 
-        usernameInput = driver.find_element(By.TAG_NAME, "input")
+        print("twitter logon started")
 
-        usernameInput.send_keys(username)
+        driver.get("https://twitter.com/login")
+        time.sleep(10)
+
+        emailLabel = driver.find_element(By.XPATH, "//span[contains(text(), 'Phone, email, or username')]/ancestor::label[1]")
+
+        emailInput = emailLabel.find_element( By.XPATH, ".//input[1]")
+
+        emailInput.send_keys(email)
 
         time.sleep(1)
 
@@ -41,36 +26,67 @@ def twitterLogon(email, username, password, driver):
 
         nextButton.click()
 
+        time.sleep(5)
+
+        try:
+            title = driver.find_element(By.XPATH, "//span[contains(text(), 'Enter your phone number or username')]")
+            
+            print("enter phone number or username found")
+
+            usernameInput = driver.find_element(By.TAG_NAME, "input")
+
+            usernameInput.send_keys(username)
+
+            time.sleep(1)
+
+            nextButtonText = driver.find_element(By.XPATH, "//span[contains(text(), 'Next')]")
+
+            nextButton = nextButtonText.find_element(By.XPATH, ".//ancestor::div[@role='button'][1]")
+
+            nextButton.click()
 
 
-    except:
-        print("phone number / username not requested")
 
-    time.sleep(5)
+        except:
+            print("phone number / username not requested")
 
-    passwordLabel = driver.find_element(By.XPATH, "//span[contains(text(), 'Password')]/ancestor::label[1]")
+        time.sleep(5)
 
-    passwordInput = passwordLabel.find_element( By.XPATH, ".//input[1]")
+        passwordLabel = driver.find_element(By.XPATH, "//span[contains(text(), 'Password')]/ancestor::label[1]")
 
-    passwordInput.send_keys(password)
+        passwordInput = passwordLabel.find_element( By.XPATH, ".//input[1]")
 
-    time.sleep(1)
+        passwordInput.send_keys(password)
 
-    LoginButtonText = driver.find_element(By.XPATH, "//span[contains(text(), 'Log in')]")
+        time.sleep(1)
 
-    LoginButton = LoginButtonText.find_element(By.XPATH, ".//ancestor::div[@role='button'][1]")
+        LoginButtonText = driver.find_element(By.XPATH, "//span[contains(text(), 'Log in')]")
 
-    LoginButton.click()
+        LoginButton = LoginButtonText.find_element(By.XPATH, ".//ancestor::div[@role='button'][1]")
 
-    time.sleep(5)
+        LoginButton.click()
 
-    AcceptAllText = driver.find_element(By.XPATH, "//span[contains(text(), 'Accept all cookies')]")
+        time.sleep(5)
 
-    AcceptAllButton = AcceptAllText.find_element(By.XPATH, ".//ancestor::div[@role='button'][1]")
+        AcceptAllText = driver.find_element(By.XPATH, "//span[contains(text(), 'Accept all cookies')]")
 
-    AcceptAllButton.click()
+        AcceptAllButton = AcceptAllText.find_element(By.XPATH, ".//ancestor::div[@role='button'][1]")
 
-    time.sleep(3)
+        AcceptAllButton.click()
+
+        time.sleep(3)
+
+        print("twitter logon ended")
+
+    
+    except ValueError as e:
+    # Code to handle the ValueError
+
+        print("twitter logon failed")
+
+        print(f"A ValueError occurred: {str(e)}")
+
+        
 
 
 
