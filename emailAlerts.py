@@ -6,7 +6,7 @@ from email import encoders
 
 def sendEmail(subject, body, filename):
         
-    appPassword = 'ywlnmsusmudfxein'
+    appPassword = 
 
     connection = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 
