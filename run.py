@@ -1,10 +1,10 @@
-from getIntros import getIntros
+from codeLibraries.getIntros import getIntros
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from twitterLogon import twitterLogon
+from codeLibraries.twitterLogon import twitterLogon
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from emailAlerts import sendEmail
+from codeLibraries.emailAlerts import sendEmail
 import time
 
 def run():
@@ -36,16 +36,20 @@ def run():
 
     twitterLogon("wmabetting@gmail.com", "FrontdoorWill",  "Frontdoor2023", driver)
 
-    getIntros(driver, "followers.csv")
+    getIntros(driver, "./data/followers.csv")
 
 
-# while True:      
-#     try: 
+while True:      
+    try: 
 
-sendEmail("Restart", "We have just relaunched the triage system", "")
-run()
+        sendEmail("Restart", "We have just relaunched the triage system", "")
+        run()
 
-    # except:
-    #     print("crash")
-    #     sendEmail("Crash Report", "Top level crash, waiting 30 seconds then relaunching", "")
-    #     time.sleep(30)
+    except Exception as e:
+     
+        print("crash top level:   " + str(e))
+
+        body = "Top level crash, waiting 30 seconds then relaunching: \n\n" + str(e) 
+
+        sendEmail("Crash Report", body, "")
+        time.sleep(30)
